@@ -369,3 +369,119 @@ db.sales.find({
 
 // Q5
 // Q6
+
+// Creating our own database in mongo
+// 1. use <database new name>
+// 2. insert a document into a new collecion
+use tgc10_shelter
+db.animals.insert({
+    'name' : 'Fluffy',
+    'age' : 3,
+    'breed' : 'Golden Retriever',
+    'type' : 'Dog'
+})
+
+db.animals.insert({
+    'name' : 'Pixie',
+    'age' : 4,
+    'breed' : 'Yorkshire Terrier',
+    'type' : 'Dog'
+})
+db.animals.insert({
+    'name' : 'Mochi',
+    'age' : 1,
+    'breed' : 'Maltipoo',
+    'type' : 'Dog'
+})
+// inserting many (arrays)
+db.animals.insertMany([
+    {
+        'name' : 'Dazzy',
+        'age' : 4,
+        'breed' : 'Greyhound',
+        'type' : 'Dog'
+    },
+    {
+        'name' : 'Sugar',
+        'age' : 14,
+        'breed' : 'British Shorthair',
+        'type' : 'Cat'
+    },
+    {
+        'name' : 'Rex',
+        'age' : 1,
+        'breed' : 'Goldfish',
+        'type' : 'Fish'
+    }
+])
+// update by providing A new document (overwriting) 
+// HTTP restful PUT
+db.animals.update({
+    '_id' : ObjectId('6030beb1598aa2ed531dde27')
+},{
+        'name' : 'Dash',
+        'age' : 3,
+        'breed' : 'Greyhound',
+        'type' : 'Dog'
+})
+
+// update by modifying a key
+// HTTP restful PATCH
+db.animals.update({
+    '_id' : ObjectId('6030beb1598aa2ed531dde28')
+},{
+        '$set' : {
+            'breed' : 'Bengal Cat'
+        }
+})
+
+// DELETE 
+db.animals.remove({
+    '_id' : ObjectId('6030beb1598aa2ed531dde29')
+})
+
+// mongoLAB P6
+// create a new database
+use fake_school
+// insert into students collections
+db.students.insertMany([
+    {
+        'name' : 'Jane Doe',
+        'age' : 13,
+        'subjects' : ['Defense Against the Dark Arts', 'Charms', 'History of Magic'],
+        'dateEnrolled' : '13MAY2016'
+    },
+    {
+        'name' : 'James Verses',
+        'age' : 14,
+        'subjects' : ['Transfiguration', 'Alchemy'],
+        'dateEnrolled' : '15JUNE2015'
+    },
+    {
+        'name' : 'Jonathan Goh',
+        'age' : 12,
+        'subjects' : ['Divination', 'Study of Ancient Runes'],
+        'dateEnrolled' : '16APRIL2017'
+    },
+])
+// change James Verses age to 13
+db.students.update({
+    '_id' : ObjectId('6030c2d0598aa2ed531dde2b')
+},{
+        '$set' : {
+            'age' : 13
+        }
+})
+// change Jane Doe to Jane Doe Jr & age to 11
+db.students.update({
+    '_id' : ObjectId('6030c2d0598aa2ed531dde2a')
+},{
+        'name' : 'Jane Doe Jr.',
+        'age' : 11,
+        'subjects' : ['Defense Against the Dark Arts', 'Charms', 'History of Magic'],
+        'dateEnrolled' : '13MAY2016'
+})
+// remove Jonathan Goh
+db.students.remove({
+    '_id' : ObjectId('6030c2d0598aa2ed531dde2c')
+})
