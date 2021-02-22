@@ -448,20 +448,30 @@ db.students.insertMany([
     {
         'name' : 'Jane Doe',
         'age' : 13,
-        'subjects' : ['Defense Against the Dark Arts', 'Charms', 'History of Magic'],
-        'dateEnrolled' : '13MAY2016'
+        'subjects' : [
+            'Defense Against the Dark Arts', 
+            'Charms', 
+            'History of Magic'
+        ],
+        'dateEnrolled' : ISODate('2016-05-13')
     },
     {
         'name' : 'James Verses',
         'age' : 14,
-        'subjects' : ['Transfiguration', 'Alchemy'],
-        'dateEnrolled' : '15JUNE2015'
+        'subjects' : [
+            'Transfiguration', 
+            'Alchemy'
+        ],
+        'dateEnrolled' : ISODate('2015-06-15')
     },
     {
         'name' : 'Jonathan Goh',
         'age' : 12,
-        'subjects' : ['Divination', 'Study of Ancient Runes'],
-        'dateEnrolled' : '16APRIL2017'
+        'subjects' : [
+            'Divination', 
+            'Study of Ancient Runes'
+        ],
+        'dateEnrolled' : ISODate('2017-04-16')
     },
 ])
 // change James Verses age to 13
@@ -478,10 +488,92 @@ db.students.update({
 },{
         'name' : 'Jane Doe Jr.',
         'age' : 11,
-        'subjects' : ['Defense Against the Dark Arts', 'Charms', 'History of Magic'],
+        'subjects' : [
+            'Defense Against the Dark Arts', 
+            'Charms', 
+            'History of Magic'
+        ],
         'dateEnrolled' : '13MAY2016'
 })
 // remove Jonathan Goh
 db.students.remove({
     '_id' : ObjectId('6030c2d0598aa2ed531dde2c')
+})
+
+// updating to ISODate
+db.students.update({
+    '_id' : ObjectId('6030c2d0598aa2ed531dde2b')
+},{
+        '$set' : {
+            'dateEnrolled' : ISODate('2015-06-15')
+        }
+})
+
+db.students.update({
+    '_id' : ObjectId('6030c2d0598aa2ed531dde2a')
+},{
+        '$set' : {
+            'dateEnrolled' : ISODate('2016-05-13')
+        }
+})
+
+// add embedded documents
+db.animals.insert({
+    'name' : 'Cookie',
+    'age' : 3,
+    'breed' : 'Poodle',
+    'type' : 'Dog',
+    'checkups' : [
+        {
+            '_id' : ObjectId(),
+            'name' : 'Dr Chua',
+            'diagnosis' : 'Heartworms',
+            'treatment' : 'Steroids'
+        }
+    ]
+
+})
+// add a new checkup to cookie
+db.animals.update({
+    '_id' : ObjectId('6030ca2b598aa2ed531dde2e')
+}, {
+    '$push' : {
+        'checkups' :{
+            '_id' : ObjectId(),
+            'name' : 'Dr.Tan',
+            'diagnosis' : 'Vomitting',
+            'treatment' : 'Alkaline Tablets'
+        }
+    }
+})
+
+db.animals.update({
+    '_id' : ObjectId('6030bc45598aa2ed531dde24')
+}, {
+    '$push' : {
+        'checkups' : {
+            '_id' : ObjectId(),
+            'name' : 'Dr. Lee',
+            'diagnosis' : 'Skin Infection',
+            'treatment' : 'Antibiotics'
+        }
+    }
+})
+
+db.animals.update({
+    'checkups._id' : ObjectId('6030cc24598aa2ed531dde30') 
+}, {
+    '$set' : {
+        'checkups.$.diagnosis' : 'Infection',
+        'checkups.$.treatment' : 'Antibiotic Injection'
+    }
+})
+
+// remove from array of sub-document
+db.animals.update({
+    'checkups._id' : ObjectId('6030cc24598aa2ed531dde30') 
+},{
+    '$pull' : {
+        'checkups._id' : ObjectId('6030cc24598aa2ed531dde30')
+    }
 })
